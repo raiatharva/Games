@@ -299,7 +299,7 @@ def shop():
         quantity_choice = input('How many would you like to buy? \n1) 1\n2) 10\n3) Max\n')
         purchase(stock_shop[item_choice], quantity_choice)
     print('Thank you.')
-A
+
 
 def purchase(item, quantity):
     if (quantity == '1' and player.wallet >= item['Cost']):
