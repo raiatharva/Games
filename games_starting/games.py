@@ -1,0 +1,570 @@
+import random
+import time
+
+# Game 1
+
+def game1(money):
+    print('\n'
+        'Welcome to the first game. It is a simple coin toss game where you can choose \n'
+        'whether to play heads or tails and how much you bet per play. \n'
+        "If you guess correctly, you will double your bet and if you don't, you lose it."
+        "\n")
+    selection = input('Enter 0 for heads or 1 for tails: ')
+    bet_value = float(input('How much do you wish to bet: '))
+
+
+    num = random.randint(0, 1)
+    print('Tossing the coin.')
+    time.sleep(3)
+    if selection == '0' and num == 1:
+        money += bet_value
+        print('Heads indeed! You win {0}$.'.format(bet_value))
+    elif selection == '0' and num == 0:
+        money -= bet_value
+        print('Tough luck. The coin rolled tails. You lose {0}$.'.format(bet_value))
+    elif selection == '1' and num == 0:
+        money += bet_value
+        print('Tails indeed! You win {0}$.'.format(bet_value))
+    elif selection == '1' and num == 1:
+        money -= bet_value
+        print('Tough luck. The coin rolled heads. You lose {0}$.'.format(bet_value))
+    return money
+
+
+# Game 2
+
+def game2(money):
+    print('\nWelcome to Cho-Han.\n'
+          'The goal is to predict whether the sum of the rolls of 2 dice will be even or odd.\n'
+          '\n')
+
+    selection = input('Enter 1 for even or 0 for odd: ')
+    if selection in ['0','1']:
+        bet_value = float(input('How much do you wish to bet on that? '))
+        roll1 = random.randint(1, 6)
+        roll2 = random.randint(1, 6)
+        print('Rolling the dice')
+        time.sleep(3)
+        num = roll1 + roll2
+        if num % 2 == 0 and selection == '1':
+            money += bet_value
+            print('The dice rolled {0} and {1}. Even! You win {2}$.'.format(roll1, roll2, bet_value))
+        elif num % 2 == 0 and selection == '0':
+            money -= bet_value * 1.5
+            print('The dice rolled {0} and {1}. Even! You lose {2}$.'.format(roll1, roll2, bet_value))
+        elif num % 2 != 0 and selection == '0':
+            money += bet_value
+            print('The dice rolled {0} and {1}. Odd! You win {2}$.'.format(roll1, roll2, bet_value))
+        else:
+            money -= bet_value * 1.5
+            print('The dice rolled {0} and {1}. Odd! You lose {2}$.'.format(roll1, roll2, bet_value))
+    else:
+        print('Invalid input. Please try again')
+    return money
+
+
+# Game 3
+
+def game3(money):
+
+    print( '\n'
+        'Welcome to the card game. \n'
+        'You draw a card, and the computer does the same. Bigger card wins.'
+        '\n')
+
+
+    cards = [1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 8, 8, 8, 8, 9, 9,
+             9, 9, 10, 10,10, 10, 12, 12, 12, 12, 13, 13, 13, 13, 14, 14, 14, 14]
+    bet_value = float(input('How much would you like to bet: '))
+    draw1 = cards[random.randint(0, len(cards))]
+    draw2 = cards[random.randint(0, len(cards))]
+
+    if draw1 > draw2:
+        money += bet_value
+        cards.remove(draw1)
+        cards.remove(draw2)
+
+        print(
+            'You drew a {0} and the computer {1}! You win {2}$.'.format(
+                draw1, draw2, bet_value))
+
+
+    elif draw2 > draw1:
+        money -= bet_value
+
+        cards.remove(draw1)
+        cards.remove(draw2)
+
+        print(
+            'You drew a {0} and the computer {1}! You lose {2}$.'.format(
+                draw1, draw2, bet_value))
+
+
+    else:
+
+           print('Draw! Another round')
+
+           cards.remove(draw1)
+           cards.remove(draw2)
+
+    return money
+
+
+#Game 4
+def game4(money):
+
+    table = ('              ______________________                0                 \n '
+             '1 to 18                              1R            2B              3R\n'
+             '                   1st 12             4B            5R              6B\n'
+             ' EVEN                                 7R            8B              9R\n'
+             '              ______________________  10B           11B             12R\n'
+             ' RED                                  13B           14R             15B\n'
+             '                   2nd 12             16R           17B             18R\n'
+             ' BLACK                                19R           20B             21R\n'
+             '              ______________________  22B           23R             24B\n'
+             ' ODD                                  25R           26B             27R\n'
+             '                   3rd 12             28B           29B             30R\n'
+             ' 19 to 36                             31B           32R             33B\n'
+             '              ______________________  34R           35B             36R\n'
+             '\n'
+             '                                     2 to 1        2 to 1          2 to 1 \n'
+             '\n'
+             'Inside Bets:       Return:         Outside Bets:                   Return:\n'
+             '(1) Straight       35             (8)  Red or Black                1\n'
+             '(2) Split          17             (9)  Odd or Even                 1\n'
+             '(3) Street         11             (10) Low(1-18) or High(19-36)    1\n'
+             '(4) Six Line       5              (11) Columns                     2\n'
+             '(5) Corner         8              (12) Dozens                      2\n'
+             '(6) Trio           11.667\n'         
+             '(7) Basket         8\n')
+    print('\nWelcome to the Roulette game!\n'
+          'Here is the board:\n',table)
+
+    board = list(range(0, 36))
+    black = [2, 4, 6, 8, 10, 11, 13, 15, 17, 20, 22, 24, 26, 28, 29, 31, 33, 35]
+    red = [1, 3, 5, 7, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36]
+    adjecent = [[1, 2], [2, 3], [4, 5], [5, 6], [7, 8], [8, 9], [10, 11], [11, 12], [13, 14], [14, 15], [16, 17],
+                [17, 18], [19, 20], [20, 21], [22, 23], [23, 24], [25, 26], [28, 29], [29, 30], [31, 32], [32, 33],
+                [34, 35], [35, 36]]
+    rows_start = [1, 3, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34]
+    corners1 = [1, 2, 4, 5]
+    corners2 = [2, 3, 5, 6]
+    corners = [corners1, corners2]
+    for i in range(1, 11):
+        corners.append([x + 3 * i for x in corners1])
+        corners.append([x + 3 * i for x in corners2])
+
+    corner_starts = []
+    for i in range(len(corners)):
+        corner_starts.append(corners[i][0])
+
+    even = []
+    odd = []
+    for i in range(len(board)):
+        if board[i] % 2 == 0:
+            even.append(board[i])
+        elif board[i] % 2 != 0:
+            odd.append(board[i])
+
+    bet = input('Please select a bet: ')
+
+    if bet == '1':
+
+        number = int(input('Straight\nYou select a single number and if you win, you win 35 times your bet.\n'
+                           'Please select a  number: '))
+        if number not in range(0,36):
+
+           print('Invalid input. Please try again.')
+        else:
+
+
+
+            bet_value = float(input('How much would you like to bet: '))
+            roll = random.randint(0, 36)
+            print('The ball is rolling.')
+            time.sleep(3)
+            if number == roll:
+                money += 35 * bet_value
+                print('Congratulations! The table rolled {0} and you won {1}$.'.format(roll,35 * bet_value))
+
+            else:
+                money -= bet_value
+                print('Too bad. The table rolled a {0} and you lost {1}$.'.format(roll, bet_value))
+
+            return money
+
+
+
+    elif bet == '2':
+
+        first = int(input('Split\nYou select two adjecent numbers and if you win, you win 17 times your bet.\n '
+                          'Please select the first number: '))
+        second = int(input('Please select the second number: '))
+
+        if list([first, second]) in adjecent:
+            bet_value = float(input('How much would you like to bet: '))
+            roll = random.randint(0, 36)
+            print('The ball is rolling.')
+            time.sleep(3)
+            if first == roll or second == roll:
+                money += 17 * bet_value
+                print('Congratulations! The table rolled a {0} and you won {1}$.'.format(roll,17 * bet_value))
+            else:
+                money -= bet_value
+                print('Too bad. The table rolled a {0} and you lost {1}$.'.format(roll,bet_value))
+        else:
+            print('Invalid input. Those numbers are not adjecent. Please try again!')
+
+
+
+        return money
+
+
+    elif bet == '3':
+        first = int(input('Street\nYou select a single row and if you win, you win 11 times your bet.\n'
+                          'Select the number at the start of the row: '))
+
+        if first in rows_start:
+            row = [first, first + 1, first + 2]
+            bet_value = float(input('How much would you like to bet: '))
+            roll = random.randint(0, 36)
+            print('The ball is rolling.')
+            time.sleep(3)
+            if roll in row:
+                money += 11 * bet_value
+                print('Congratulations! The table rolled a {0} and you won {1}$.'.format(roll,11 * bet_value,))
+            else:
+                money -= bet_value
+                print(
+                    'Too bad. The table rolled a {0} and you lost {1}$.'.format(roll, bet_value))
+
+
+
+
+        else:
+            print('Invalid input. No row starts with that number. Please try again!')
+
+
+
+        return money
+
+
+    elif bet == '4':
+
+        first = int(input('Six Line\nYou select two adjecent rows and if you win, you win 5 times your bet.\n'
+                          'Please select the number at the start of the upper row: '))
+        if first in rows_start and first < 32:
+            row = [first, first + 1, first + 2, first + 3, first + 4, first + 5]
+            bet_value = float(input('How much would you like to bet: '))
+            roll = random.randint(0, 36)
+            print('The ball is rolling.')
+            time.sleep(3)
+            if roll in row:
+                money += bet_value * 5
+                print('Congratulations! The table rolled a {0} and you won {1}$. '.format(roll,5 * bet_value))
+
+
+
+            else:
+                money -= bet_value
+                print('Too bad. The table rolled a {0} and you lost {1}$.'.format(roll,bet_value))
+
+
+        else:
+            print('Invalid input. Please try again')
+
+
+
+        return money
+
+    elif bet == '5':
+        first = int(input("Corner\nYou select a 2x2 square of numbers and if you win, you win 8 times your bet.\n"
+                          "Please select the number at the top left of the square: "))
+        if first in corner_starts:
+            square = [first, first + 1, first + 3, first + 4]
+            bet_value = float(input('How much would you like to bet: '))
+            roll = random.randint(0, 36)
+            print('The ball is rolling.')
+            time.sleep(3)
+            if roll in square:
+                money += 8 * bet_value
+                print('Congratulations! The table rolled a {0} and you won {1}$.'.format(roll,8 * bet_value))
+
+
+
+            else:
+                money -= bet_value
+                print('Too bad. The table rolled a {0} and you lost {1}$.'.format(roll,bet_value))
+
+
+
+        else:
+            print('Invalid input. Please try again!')
+
+
+
+        return money
+
+
+    elif bet == '6':
+        first = int(input('Trio\nYou select a trio of of numbers around 0 and if you win, you win 11.667 times your bet.\n'
+                          'Enter 0 for [0,1,2] or 1 for [0,2,3]: '))
+        if first == 0:
+            set = [0, 1, 2]
+            bet_value = float(input('How much would you like to bet: '))
+            roll = random.randint(0, 36)
+            print('The ball is rolling.')
+            time.sleep(3)
+
+            if roll in set:
+                money += 11.667 * bet_value
+                print('Congratulations! The table rolled a {0} and you won {1}$.'.format(roll,8 * bet_value))
+
+
+            else:
+                money -= bet_value
+                print('Too bad. The table rolled a {0} and you lost {1}$. '.format(roll,bet_value))
+
+
+        elif first == 1:
+            set = [0, 2, 3]
+            bet_value = float(input('How much would you like to bet: '))
+            roll = random.randint(0, 36)
+            print('The ball is rolling.')
+            time.sleep(3)
+
+            if roll in set:
+                money += 11.667 * bet_value
+                print('Congratulations! The table rolled a {0} and you won {1}$.'.format(roll, 11.667 * bet_value))
+
+
+            else:
+                money -= bet_value
+                print('Too bad. The table rolled a {0} and you lost {1}$.'.format(roll,bet_value))
+
+
+        else:
+            print('Invalid input. Please try again!')
+
+
+
+        return money
+
+    elif bet == '7':
+        set = [0, 1, 2, 3]
+        bet_value = float(input('Basket\nYou selected the numbers 0, 1, 2 and 3 and if you win, you win 8 times your bet.\n'
+                                'How much would you like to bet: '))
+        roll = random.randint(0, 36)
+        print('The ball is rolling.')
+        time.sleep(3)
+
+        if roll in set:
+            money += 8 * bet_value
+            print('Congratulations! The table rolled a {0} and you won {1}$. '.format(roll,8 * bet_value))
+
+
+        else:
+            money -= bet_value
+            print('Too bad. The table rolled a {0} and you lost {1}$. '.format(roll,bet_value))
+
+
+
+        return money
+
+    elif bet == '8':
+        color = input('Red or Black\nYou select either red or black and if you win, you double your bet.\n'
+                      'Enter 0 for red or 1 for black: ')
+        if color in ['0', '1']:
+            bet_value = float(input('How much would you like to bet: '))
+            roll = random.randint(0, 36)
+            print('The ball is rolling.')
+            time.sleep(3)
+            if (roll in black and color == '0') or (roll in red and color == 'Red'):
+                money += bet_value
+                print('Congratulations! The table rolled a {0} and you won {1}$.'.format(roll, bet_value ))
+
+
+            else:
+                money -= bet_value
+                print('Too bad. The table rolled a {0} and you lost {1}$.'.format(roll,bet_value))
+
+
+        else:
+            print('Invalid input. Please try again!')
+
+
+
+        return money
+
+
+    elif bet == '9':
+        ooe = input('Odd or Even\nYou select either odd or even and if you win, you double your bet.\n'
+                    'Enter Odd for odd or Even for even: ')
+        if ooe != 'O' and ooe != 'E':
+            print('Invalid input. Please try again!')
+
+
+        else:
+            bet_value = float(input('How much would you like to bet: '))
+            roll = random.randint(0, 36)
+            print('The ball is rolling.')
+            time.sleep(3)
+            if (roll in even and ooe == 'E') or (roll in odd and ooe == 'O'):
+                money += bet_value
+                print('Congratulations! The table rolled a {0} and you won {1}$. '.format(roll, bet_value ))
+
+
+            else:
+                money -= bet_value
+                print('Too bad. The table rolled a {0} and you lost {1}$.'.format(roll,bet_value))
+
+
+
+            return money
+
+
+    elif bet == '10':
+        loh = input('Low or High\nYou select either low(1-18) or high(19-36) and if you win, you double your bet.\n'
+                    'Enter 1 for low or 0 for high: ')
+        if loh != '1' and loh != '0':
+            print('Invalid input. Please try again!')
+
+
+        else:
+            bet_value = float(input('How much would you like to bet: '))
+            roll = random.randint(0, 36)
+            print('The ball is rolling.')
+            time.sleep(3)
+            if (roll < 19 and roll != 0 and loh == '1') or (roll > 19 and loh == '0'):
+                money += bet_value
+                print('Congratulations! The table rolled a {0} and you won {1}$.'.format(roll,bet_value)        )
+
+
+
+            else:
+                money -= bet_value
+                print('Too bad. The table rolled a {0} and you lost {1}$. '.format(roll,bet_value))
+
+
+
+            return money
+
+
+    elif bet == '11':
+        first = []
+        second = []
+        third = []
+        for x in range(12):
+            first.append(1 + 3 * x)
+            second.append(2 + 3 * x)
+            third.append(3 + 3 * x)
+        column = int(input('Columns\nYou select a single column of numbers (1,2,3) and if you win, you win 2 times your bet.\n'
+                           'Please select a column: '))
+        if column in [1, 2, 3]:
+            bet_value = float(input('How much would you like to bet: '))
+            roll = random.randint(0, 36)
+            print('The ball is rolling.')
+            time.sleep(3)
+            if not (not (column == 1 and roll in first) and not (column == 2 and roll in second) and not (
+                    column == 3 and roll in third)):
+                money += 2 * bet_value
+                print('Congratulations! The table rolled a {0}  and you won {1}$.'.format(roll,2 * bet_value))
+
+
+            else:
+                money -= bet_value
+                print('Too bad. The table rolled a {0}  and you lost {1}$.'.format(roll, bet_value))
+
+
+        else:
+            print('Invalid input. Please try again!')
+
+
+
+
+        return money
+
+    elif bet == '12':
+        dozen = int(input('Dozens\nYou select a single dozen of numbers (1st, 2nd, 3rd) and if you win, you win 2 times your bet.\n'
+                          'Please select a dozen (1,2,3): '))
+        if dozen in [1, 2, 3]:
+            bet_value = float(input('How much would you like to bet: '))
+            roll = random.randint(0, 36)
+            print('The ball is rolling.')
+            time.sleep(3)
+            if (dozen == 1 and roll in list(range(1, 12))) or (dozen == 2 and roll in list(range(13, 21))) or (
+                    dozen == 3 and roll in list(range(28, 36))):
+                money += 2 * bet_value
+                print('Congratulations! The table rolled a {0}  and you won {1}$. '.format(roll,2 * bet_value))
+
+
+            else:
+                money -= bet_value
+                print('Too bad. The table rolled a {0}  and you lost {1}$.'.format(roll,bet_value))
+
+
+        else:
+            print('Invalid input. Please try again!')
+
+
+
+    return money
+
+
+# Call your game of chance functions here
+if __name__=='__main__':
+    print('Welcome to the game arena. \n'
+          'We have 4 games for you today:\n')
+
+    geld=500
+    while geld>0:
+        
+
+        games = (' \n'
+                 ' (1) Coin Toss \n'                                            
+                 ' (2) Cho-Han\n'
+                 ' (3) Cards game\n'
+                 ' (4) Roulette'
+                 '\n')
+        print('\n'
+              'You currently have {0}$.'
+              '\n'.format(geld))
+
+        print(games)
+        print('\n' )
+
+
+        selection=int(input('Which game would you like to play: '))
+        if selection==1:
+            while True:
+                geld=game1(geld)
+                answer=input('Would you like to play another round? Enter (y) to quit or anything else to play on:')
+                if answer=='y':
+                    break
+
+
+
+        elif selection==2:
+            while True:
+                geld=game2(geld)
+                answer=input('Would you like to play another round? Enter (y) to quit or anything else to play on:')
+                if answer=='y':
+                    break
+
+        elif selection==3:
+            while True:
+                geld=game3(geld)
+                answer=input('Would you like to play another round? Enter (y) to quit or anything else to play on:')
+                if answer=='y':
+                    break
+                    
+        elif selection==4:
+            while True:
+                geld=game4(geld)
+                answer=input('Would you like to play another round? Enter (y) to quit or anything else to play on:')
+                if answer=='y':
+                    break
+        else:
+            print('Invalid input. Please try again.')
+    else:
+        print("You're out of money. Game over!")
